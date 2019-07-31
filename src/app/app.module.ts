@@ -39,7 +39,7 @@ import {TrainingService} from "./training/training.service";
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
-    FlexLayoutModule,
+    FlexLayoutModule
 
 
   ],

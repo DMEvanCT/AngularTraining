@@ -1,8 +1,9 @@
-import {Component, OnInit } from '@angular/core';
-import {MatDialog} from "@angular/material";
-import {StopTrainingComponent} from "./stop-training.component";
-import {TrainingService} from "../training.service";
-import {Time} from "@angular/common";
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
+
+import { StopTrainingComponent } from './stop-training.component';
+import { TrainingService } from '../training.service';
+import Timer = NodeJS.Timer;
 
 @Component({
   selector: 'app-current-training',
@@ -11,31 +12,27 @@ import {Time} from "@angular/common";
 })
 export class CurrentTrainingComponent implements OnInit {
   progress = 0;
-  timer: number;
+  timer: Timer;
 
-
-  constructor(private dialog: MatDialog, private trainingService: TrainingService) { }
+  constructor(private dialog: MatDialog, private trainingService: TrainingService) {}
 
   ngOnInit() {
-    this.StartResumeTimer()
+    this.startOrResumeTimer();
   }
 
-  StartResumeTimer() {
-    const step = this.trainingService.getRunningExercise().duration / 100  * 1000;
+  startOrResumeTimer() {
+    const step = this.trainingService.getRunningExercise().duration / 100 * 1000;
     this.timer = setInterval(() => {
       this.progress = this.progress + 1;
       if (this.progress >= 100) {
         this.trainingService.completeExercise();
         clearInterval(this.timer);
       }
-    }, step)
+    }, step);
   }
 
-
-
-
-
   onStop() {
+    clearInterval(this.timer);
     const dialogRef = this.dialog.open(StopTrainingComponent, {
       data: {
         progress: this.progress
@@ -44,10 +41,10 @@ export class CurrentTrainingComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.trainingService.cancelExercise(this.progress)
-      } else this.StartResumeTimer()
-    })
-    clearInterval(this.timer)
+        this.trainingService.cancelExercise(this.progress);
+      } else {
+        this.startOrResumeTimer();
+      }
+    });
   }
-
 }

@@ -10,7 +10,7 @@ describe('NewTrainingComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ NewTrainingComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
