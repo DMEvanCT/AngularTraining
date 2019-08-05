@@ -10,7 +10,6 @@
         email
         required #emailInput="ngModel">
       <mat-error *ngIf="emailInput.hasError('required')">You must enter an email</mat-error>
-      <mat-error *ngIf="!emailInput.hasError('required')">You must a valid email</mat-error>
     </mat-form-field>
     <mat-form-field hintLabel="Must be 6 characters in length">
       <input
